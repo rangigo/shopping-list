@@ -1,0 +1,301 @@
+html,
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.intro {
+  box-shadow: 0 5px 5px -3px #ccc;
+  padding: 25px;
+  text-align: center;
+}
+
+.main-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 30px 0;
+}
+
+.main-content h1 {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.my-table > div {
+  display: grid;
+  grid-template-columns: 0.2fr 1fr 0.2fr 0.2fr;
+}
+
+.my-table > div > div {
+  border-right: 3px solid #ccc;
+  border-top: 3px solid #ccc;
+  padding: 15px;
+}
+
+.my-table > div > div:first-child {
+  border-left: 3px solid #ccc;
+}
+
+.my-table > div:last-child > div {
+  border-bottom: 3px solid #ccc;
+}
+
+.shopping-list > .title > .add-container {
+  padding: 5px;
+  text-align: center;
+}
+
+.add-button {
+  cursor: pointer;
+  border-radius: 10px;
+  height: 100%;
+  width: 70%;
+  background: #4fc775;
+  border: none;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+}
+
+.add-button:hover {
+  background: #14ee59;
+}
+
+.shopping-list > .item > .check-box-container {
+  position: relative;
+  padding-left: 40px;
+}
+
+.shopping-list > .item > .check-box-container > input[type='checkbox'] {
+  width: 70%;
+  height: 80%;
+  position: absolute;
+  padding-left: 35px;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  z-index: 3;
+  cursor: pointer;
+}
+
+.shopping-list > .item > .check-box-container > .checkmark {
+  position: absolute;
+  top: 0.8em;
+  left: 0.6em;
+  height: 20px;
+  width: 20px;
+  border: 1px solid #6f7878;
+}
+
+.shopping-list
+  > .item
+  > .check-box-container:hover
+  input[type='checkbox']
+  ~ .checkmark {
+  background-color: #ccc;
+}
+
+.shopping-list
+  > .item
+  > .check-box-container
+  input[type='checkbox']:checked
+  ~ .checkmark {
+  background-color: #2196f3;
+}
+
+.shopping-list > .item > .check-box-container .checkmark:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+
+.shopping-list
+  > .item
+  > .check-box-container
+  input[type='checkbox']:checked
+  ~ .checkmark:after {
+  display: block;
+}
+
+.shopping-list > .item > .check-box-container .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.shopping-list > .item > .delete-container {
+  padding: 5px;
+  text-align: center;
+}
+
+.delete-button {
+  cursor: pointer;
+  border-radius: 10px;
+  height: 100%;
+  width: 70%;
+  background: #dc3b3b;
+  border: none;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+}
+
+.delete-button:hover {
+  background: red;
+}
+
+.dash {
+  width: 80%;
+  height: 2px;
+  margin: 50px auto;
+  background: rgb(142, 142, 142);
+}
+
+.done-list > .title > div:first-child {
+  border-top: none;
+  border-left: none;
+  border-bottom: none;
+}
+
+.done-list > .title > div:last-child {
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+}
+
+.done-item-name,
+.done-quantity {
+  text-decoration: line-through;
+}
+
+.done-list > .done-item > .delete-container,
+.done-list > .done-item > .undone-container {
+  padding: 5px;
+  text-align: center;
+}
+
+.done-list > .done-item:first-child > div:first-child,
+.done-list > .done-item:first-child > div:last-child {
+  border-top: 3px solid #ccc;
+}
+
+.undone-button {
+  cursor: pointer;
+  border-radius: 10px;
+  height: 100%;
+  width: 70%;
+  background: rgb(61, 168, 255);
+  border: none;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+}
+
+.undone-button:hover {
+  background: rgb(0, 136, 248);
+}
+
+.my-form {
+  display: none;
+  position: fixed; /* Stay in place */
+  z-index: 4; /* Sit on top */
+  padding-top: 15rem; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.form-content {
+  background: #454d56;
+  padding: 30px;
+  color: #b8c1c1;
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.form-content > div {
+  position: relative;
+  width: 90%;
+}
+
+.form-content label {
+  color: #b8c1c1;
+  position: absolute;
+  pointer-events: none;
+  left: 0;
+  top: 1.3em;
+  transition: 0.2s ease all;
+}
+
+.form-content input {
+  background-color: #454d56;
+  border-bottom: 1px solid #6f7878;
+  border-left: 1px solid #454d56;
+  border-right: 1px solid #454d56;
+  border-top: 1px solid #454d56;
+  box-sizing: border-box;
+  color: white;
+  font-weight: 300;
+  font-size: 1em;
+  margin: 0 0 2em 0;
+  padding: 12px 20px;
+  transition: 0.2s ease all;
+  width: 100%;
+}
+
+.form-content input:focus,
+.form-content input:valid,
+.form-content textarea:valid {
+  border: 1px solid #047cc0;
+  outline: none;
+  transition: all 0.25s linear;
+  background-color: #272727;
+  background-image: none;
+}
+
+.form-content input:focus ~ label,
+.form-content input:valid ~ label,
+.form-content textarea:valid ~ label {
+  background-color: #272727;
+  border-left: 1px solid #047cc0;
+  border-right: 1px solid #047cc0;
+  border-top: 1px solid #047cc0;
+  color: #95c4f3;
+  font-size: 0.6em;
+  margin: -1px 0 0 0;
+  padding: 0.5em 0.5em 0 0.5em;
+  top: -1.3em;
+}
+
+.form-content .close {
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.form-content .close:hover,
+.form-content .close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.form-content > .submit-button {
+  cursor: pointer;
+  border-radius: 10px;
+  height: 40px;
+  width: 80px;
+  background: rgb(61, 168, 255);
+  border: none;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+}
