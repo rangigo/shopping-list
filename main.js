@@ -1,6 +1,51 @@
 // Global list items
-const list = []
-const doneList = []
+const list = localStorage.getItem('list')
+  ? JSON.parse(localStorage.getItem('list'))
+  : []
+const doneList = localStorage.getItem('doneList')
+  ? JSON.parse(localStorage.getItem('doneList'))
+  : []
+
+//Iterate through list to append new items to the DOM
+;(() => {
+  let htmlStr = ''
+
+  for (let item of list) {
+    htmlStr += `
+      <div class='item'>
+        <div class='check-box-container'>
+          <input type="checkbox" name="check-box" onClick='doneButton(event)'>Done
+          <span class="checkmark"></span>
+        </div>
+        <div>${item.name}</div>
+        <div>${item.quantity}</div>
+        <div class='delete-container'>
+          <button class='delete-button' onClick='deleteButton(event)'>DELETE</button>
+        </div>
+      </div>
+      `
+  }
+
+  document
+    .querySelector('.shopping-list')
+    .insertAdjacentHTML('beforeend', htmlStr)
+
+  htmlStr = ''
+  for (let item of doneList) {
+    htmlStr += `<div class="done-item">
+    <div class="undone-container">
+      <button class="undone-button" onClick='undoneButton(event)'>UNDONE</button>
+    </div>
+    <div class="done-item-name">${item.name}</div>
+    <div class="done-quantity">${item.quantity}</div>
+    <div class="delete-container">
+      <button class="delete-button" onClick='deleteButtonDL(event)'>DELETE</button>
+    </div>
+  </div>`
+  }
+
+  document.querySelector('.done-list').insertAdjacentHTML('beforeend', htmlStr)
+})()
 
 /*
 Open/close Modal which is the Form
@@ -58,35 +103,9 @@ submitBtn.onclick = () => {
   //Clear the input text
   formName.value = ''
   formQuantity.value = null
+
+  localStorage.setItem('list', JSON.stringify(list))
 }
-
-/*
-//Iterate through list to append new items to the DOM
-const appendDOMList = () => {
-  const shoppingList = document.querySelector('.shopping-list')
-  let htmlStr = ''
-
-  for (let item of list) {
-    htmlStr += `
-      <div class='item'>
-        <div class='check-box-container'>
-          <input type="checkbox" name="check-box" onClick='doneButton(event)'>Done
-          <span class="checkmark"></span>
-        </div>
-        <div>${item.name}</div>
-        <div>${item.quantity}</div>
-        <div class='delete-container'>
-          <button class='delete-button' onClick='deleteButton(event)'>DELETE</button>
-        </div>
-      </div>
-      `
-  }
-
-  shoppingList.insertAdjacentHTML('beforeend', htmlStr)
-}
-
-appendDOMList()
-*/
 
 //Add function to delete button
 const deleteButton = e => {
@@ -99,6 +118,7 @@ const deleteButton = e => {
   list.splice(list.findIndex(e => e.name == name && e.quantity == quantity), 1)
   console.log(list)
   console.log(doneList)
+  localStorage.setItem('list', JSON.stringify(list))
 }
 
 //Add function to delete button of done list
@@ -113,6 +133,7 @@ const deleteButtonDL = e => {
     doneList.findIndex(e => e.name == name && e.quantity == quantity),
     1
   )
+  localStorage.setItem('doneList', JSON.stringify(doneList))
 }
 
 //Add function to done button
@@ -152,6 +173,10 @@ const doneButton = e => {
   //re-adjust done list height to animate properly
   if (doneDOMList.style.maxHeight)
     doneDOMList.style.maxHeight = doneDOMList.scrollHeight + 'px'
+
+  //Save lists to localStorage
+  localStorage.setItem('list', JSON.stringify(list))
+  localStorage.setItem('doneList', JSON.stringify(doneList))
 }
 
 //Add function to undone button
@@ -191,6 +216,10 @@ const undoneButton = e => {
   document
     .querySelector('.shopping-list')
     .insertAdjacentHTML('beforeend', htmlStr)
+
+  //Save lists to localStorage
+  localStorage.setItem('list', JSON.stringify(list))
+  localStorage.setItem('doneList', JSON.stringify(doneList))
 }
 
 //Expand table function
