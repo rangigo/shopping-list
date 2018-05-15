@@ -14,16 +14,17 @@ body {
   max-width: 1000px;
   margin: 0 auto;
   padding: 30px 0;
+  text-align: center;
 }
 
 .main-content h1 {
-  text-align: center;
   margin-bottom: 50px;
+  display: inline-block;
 }
 
 .my-table > div {
   display: grid;
-  grid-template-columns: 0.2fr 1fr 0.2fr 0.2fr;
+  grid-template-columns: 1fr 5fr 1fr 1fr;
 }
 
 .my-table > div > div {
@@ -59,6 +60,14 @@ body {
 
 .add-button:hover {
   background: #14ee59;
+}
+
+.my-table {
+  text-align: left;
+}
+
+.shopping-list {
+  transition: height 0.2s ease-out;
 }
 
 .shopping-list > .item > .check-box-container {
@@ -155,6 +164,18 @@ body {
   background: rgb(142, 142, 142);
 }
 
+.done-list {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.done-list.active {  
+  position: static;
+  opacity: 1;
+  transition: opacity 1s linear;
+}
+
 .done-list > .title > div:first-child {
   border-top: none;
   border-left: none;
@@ -211,6 +232,14 @@ body {
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@keyframes animatetop {
+  from {top: -300px; opacity: 0}
+  to {top: 0; opacity: 1}
 }
 
 .form-content {
@@ -299,3 +328,26 @@ body {
   font-family: 'Montserrat', sans-serif;
   font-weight: bold;
 }
+
+.expand.active::after {
+  content: '»';
+  display: inline-block;
+  text-align: center;
+  padding: 0;
+  transform: rotate(-90deg);
+  margin-left: 10px;
+}
+
+.expand::after {
+  content: '»';
+  display: inline-block;
+  text-align: center;
+  margin-left: 10px;
+  transform: rotate(90deg);
+}
+
+.expand:hover {
+  color: #ccc;
+  cursor: pointer;
+}
+
