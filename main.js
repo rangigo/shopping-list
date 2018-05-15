@@ -1,4 +1,6 @@
 // Global list items
+//If there are some local saves, initialize list with them
+//else an empty new array
 const list = localStorage.getItem('list')
   ? JSON.parse(localStorage.getItem('list'))
   : []
@@ -49,7 +51,6 @@ const doneList = localStorage.getItem('doneList')
 
 /*
 Open/close Modal which is the Form
-Submitting item
 */
 
 const addButton = document.querySelector('.add-button')
@@ -104,6 +105,7 @@ submitBtn.onclick = () => {
   formName.value = ''
   formQuantity.value = null
 
+  //Save new list
   localStorage.setItem('list', JSON.stringify(list))
 }
 
@@ -116,8 +118,8 @@ const deleteButton = e => {
 
   //Delete item from list
   list.splice(list.findIndex(e => e.name == name && e.quantity == quantity), 1)
-  console.log(list)
-  console.log(doneList)
+
+  //Save new list
   localStorage.setItem('list', JSON.stringify(list))
 }
 
@@ -133,6 +135,7 @@ const deleteButtonDL = e => {
     doneList.findIndex(e => e.name == name && e.quantity == quantity),
     1
   )
+  //Save new list
   localStorage.setItem('doneList', JSON.stringify(doneList))
 }
 
