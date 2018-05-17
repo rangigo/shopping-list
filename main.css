@@ -24,14 +24,14 @@ body {
 
 .my-table > div {
   display: grid;
-  grid-template-columns: 12.5% 62.5% 12.5% 12.5%;;
+  grid-template-columns: 12.5% 62.5% 12.5% 12.5%;
 }
 
 .my-table > div > div {
   border-right: 3px solid #ccc;
   border-top: 3px solid #ccc;
   padding: 15px;
-  word-wrap: break-word;  
+  word-wrap: break-word;
   display: inline-block;
   vertical-align: middle;
 }
@@ -101,37 +101,29 @@ body {
   border: 1px solid #6f7878;
 }
 
-.shopping-list
+/* .shopping-list
   > .item
   > .check-box-container:hover
   input[type='checkbox']
   ~ .checkmark {
   background-color: #ccc;
-}
+} */
 
 .shopping-list
   > .item
   > .check-box-container
-  input[type='checkbox']:checked
+  input[type='checkbox']:hover
   ~ .checkmark {
   background-color: #2196f3;
 }
 
-.shopping-list > .item > .check-box-container .checkmark:after {
-  content: '';
-  position: absolute;
-  display: none;
-}
-
 .shopping-list
   > .item
   > .check-box-container
-  input[type='checkbox']:checked
-  ~ .checkmark:after {
-  display: block;
-}
-
-.shopping-list > .item > .check-box-container .checkmark:after {
+  input[type='checkbox']:hover
+  ~ .checkmark::after {
+  content: '';
+  position: absolute;  display: block;
   left: 6px;
   top: 2px;
   width: 5px;
@@ -176,7 +168,7 @@ body {
   transition: max-height 0.2s ease-out;
 }
 
-.done-list.active {  
+.done-list.active {
   position: static;
   opacity: 1;
   transition: opacity 1s linear;
@@ -240,13 +232,19 @@ body {
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
   animation-name: animatetop;
-  animation-duration: 0.4s
+  animation-duration: 0.4s;
 }
 
 /* Add Animation */
 @keyframes animatetop {
-  from {top: -300px; opacity: 0}
-  to {top: 0; opacity: 1}
+  from {
+    top: -300px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
 }
 
 .form-content {
@@ -358,19 +356,22 @@ body {
   cursor: pointer;
 }
 
-@media (max-width: 840px) {
+@media (max-width: 860px) {
   .my-table > div > div {
     padding: 5px;
   }
 
-  button, .add-button, .delete-button, .undone-button {
-    font-size: .5em;
+  button,
+  .add-button,
+  .delete-button,
+  .undone-button {
+    font-size: 0.8em;
     padding: 3px;
     width: 100%;
   }
 
   .shopping-list > .item > .check-box-container > .checkmark {
-    top: .2em;
+    top: 0.2em;
   }
   .my-table > div {
     grid-template-columns: 12.5% 62.5% 12.5% 12.5%;
@@ -378,13 +379,31 @@ body {
 }
 
 @media (max-width: 500px) {
+  button,
+  .add-button,
+  .delete-button,
+  .undone-button {
+    font-size: 0.5em;
+  }
   .shopping-list > .item > .check-box-container > .checkmark {
-    height: 10px; width:10px;
+    height: 10px;
+    width: 10px;
     left: 0.2em;
     top: 0.7em;
   }
 
   .shopping-list > .item > .check-box-container {
     padding-left: 20px;
+  }
+
+  .shopping-list
+  > .item
+  > .check-box-container
+  input[type='checkbox']:hover
+  ~ .checkmark::after {
+    width: 2.5px;
+    height: 5px;
+    top: 0px;
+    left: 2px;
   }
 }

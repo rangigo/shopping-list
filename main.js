@@ -19,8 +19,10 @@ const doneList = localStorage.getItem('doneList')
           <input type="checkbox" name="check-box" onClick='doneButton(event)'>Done
           <span class="checkmark"></span>
         </div>
-        <div>${item.name}</div>
-        <div>${item.quantity}</div>
+        <div contenteditable='true' onclick='editFunc(event)'>${item.name}</div>  
+        <div contenteditable='true' onclick='editFunc(event, true)'>${
+          item.quantity
+        }</div>
         <div class='delete-container'>
           <button class='delete-button' onClick='deleteButton(event)'>DELETE</button>
         </div>
@@ -49,6 +51,9 @@ const doneList = localStorage.getItem('doneList')
   document.querySelector('.done-list').insertAdjacentHTML('beforeend', htmlStr)
 })()
 
+//regex to check validation of quantity
+const regex = /^[0-9]+$/
+
 /*
 Open/close Modal which is the Form
 */
@@ -74,39 +79,50 @@ closeModal.onclick = () => {
 
 //Submit new item
 submitBtn.onclick = () => {
-  //Close modal
-  modal.style.display = 'none'
+  //Validate quantity
+  if (regex.test(formQuantity.value)) {
+    if (
+      list.findIndex(
+        e => e.name == formName.value && e.quantity == formQuantity.value
+      ) == -1
+    ) {
+      //Close modal
+      modal.style.display = 'none'
+      //Add new item to the list
+      list.push({
+        name: formName.value,
+        quantity: formQuantity.value
+      })
+      //Append item to the DOM list
+      let htmlStr = `
+      <div class='item'>
+        <div class='check-box-container'>
+          <input type="checkbox" name="check-box" onClick='doneButton(event)'>Done
+          <span class="checkmark"></span>
+        </div>
+        <div onfocusout='editFunc(event) keydown='enterKey(event)'>${
+          formName.value
+        }</div>
+        <div onfocusout='editFunc(event, true) keydown='enterKey(event)''>${
+          formQuantity.value
+        }</div>
+        <div class='delete-container'>
+          <button class='delete-button' onClick='deleteButton(event)'>DELETE</button>
+        </div>
+      </div>`
 
-  //Add new item to the list
-  list.push({
-    name: formName.value,
-    quantity: formQuantity.value
-  })
-  console.log(list)
-  //Append item to the DOM list
-  let htmlStr = `
-    <div class='item'>
-      <div class='check-box-container'>
-        <input type="checkbox" name="check-box" onClick='doneButton(event)'>Done
-        <span class="checkmark"></span>
-      </div>
-      <div>${formName.value}</div>
-      <div>${formQuantity.value}</div>
-      <div class='delete-container'>
-        <button class='delete-button' onClick='deleteButton(event)'>DELETE</button>
-      </div>
-    </div>`
+      document
+        .querySelector('.shopping-list')
+        .insertAdjacentHTML('beforeend', htmlStr)
 
-  document
-    .querySelector('.shopping-list')
-    .insertAdjacentHTML('beforeend', htmlStr)
+      //Clear the input text
+      formName.value = ''
+      formQuantity.value = null
 
-  //Clear the input text
-  formName.value = ''
-  formQuantity.value = null
-
-  //Save new list
-  localStorage.setItem('list', JSON.stringify(list))
+      //Save new list
+      localStorage.setItem('list', JSON.stringify(list))
+    } else alert('Duplicate item! Pls re-enter')
+  } else alert('Invalid quantity. Please only enter positive value')
 }
 
 //Add function to delete button
@@ -208,8 +224,8 @@ const undoneButton = e => {
         <input type="checkbox" name="check-box" onClick='doneButton(event)'>Done
         <span class="checkmark"></span>
       </div>
-      <div>${name}</div>
-      <div>${quantity}</div>
+      <div onfocusout='editFunc(event)'>${name}</div>
+      <div onfocusout='editFunc(event)'>${quantity}</div>
       <div class='delete-container'>
         <button class='delete-button' onClick='deleteButton(event)'>DELETE</button>
       </div>
@@ -234,5 +250,48 @@ document.querySelector('.expand').addEventListener('click', e => {
     panel.style.maxHeight = null
   } else {
     panel.style.maxHeight = panel.scrollHeight + 'px'
+  }
+})
+
+//Edit items
+
+const editFunc = (e, isQuantity) => {
+  const name = e.target.parentNode.children[1].textContent
+  const quantity = e.target.parentNode.children[2].textContent
+  const index = list.findIndex(e => e.name == name && e.quantity == quantity)
+
+  e.target.addEventListener('focusout', function func(e2) {
+    if (isQuantity) {
+      console.log(e2.target.textContent)
+      if (regex.test(e2.target.textContent)) {
+        //Get the object in the list correspond to the current target
+        //and assign new value
+        list[index].quantity = e2.target.textContent
+      } else {
+        alert('Please enter valid quantity (no negative number and text)')
+        e2.target.textContent = list[index].quantity
+      }
+    } else {
+      list[index].name = e2.target.textContent
+    }
+
+    //Save list
+    localStorage.setItem('list', JSON.stringify(list))
+
+    e.target.removeEventListener('focusout', func, false)
+  })
+}
+
+document.querySelector('div[contenteditable]').keydown(function(e) {
+  console.log('a')
+
+  const key = e.keyCode || e.charCode // ie||others
+  if (key == 13) {
+    // if enter key is pressed
+    e.preventDefault()
+    e.currentTarget.blur()
+    console.log('here')
+
+    return false
   }
 })
