@@ -19,8 +19,10 @@ const doneList = localStorage.getItem('doneList')
           <input type="checkbox" name="check-box" onClick='doneButton(event)'>Done
           <span class="checkmark"></span>
         </div>
-        <div contenteditable='true' onclick='editFunc(event)'>${item.name}</div>  
-        <div contenteditable='true' onclick='editFunc(event, true)'>${
+        <div contenteditable='true' onclick='editFunc(event)' onkeydown='enterFocusOut(event)'>${
+          item.name
+        }</div>  
+        <div contenteditable='true' onclick='editFunc(event, true)' onkeydown='enterFocusOut(event)'>${
           item.quantity
         }</div>
         <div class='delete-container'>
@@ -100,10 +102,10 @@ submitBtn.onclick = () => {
           <input type="checkbox" name="check-box" onClick='doneButton(event)'>Done
           <span class="checkmark"></span>
         </div>
-        <div onfocusout='editFunc(event) keydown='enterKey(event)'>${
+        <div onclick='editFunc(event)' contenteditable='true' onkeydown='enterFocusOut(event)'>${
           formName.value
         }</div>
-        <div onfocusout='editFunc(event, true) keydown='enterKey(event)''>${
+        <div onclick='editFunc(event, true)' contenteditable='true' onkeydown='enterFocusOut(event)'>${
           formQuantity.value
         }</div>
         <div class='delete-container'>
@@ -224,8 +226,8 @@ const undoneButton = e => {
         <input type="checkbox" name="check-box" onClick='doneButton(event)'>Done
         <span class="checkmark"></span>
       </div>
-      <div onfocusout='editFunc(event)'>${name}</div>
-      <div onfocusout='editFunc(event)'>${quantity}</div>
+      <div onclick='editFunc(event)' contenteditable='true' onkeydown='enterFocusOut(event)'>${name}</div>
+      <div onclick='editFunc(event, true)' contenteditable='true' onkeydown='enterFocusOut(event)'>${quantity}</div>
       <div class='delete-container'>
         <button class='delete-button' onClick='deleteButton(event)'>DELETE</button>
       </div>
@@ -255,19 +257,25 @@ document.querySelector('.expand').addEventListener('click', e => {
 
 //Edit items
 
+//Content onclick
 const editFunc = (e, isQuantity) => {
+  //when onclick get the original item's name and quantity
   const name = e.target.parentNode.children[1].textContent
   const quantity = e.target.parentNode.children[2].textContent
+
+  //and find index of its in the stored list
   const index = list.findIndex(e => e.name == name && e.quantity == quantity)
 
+  //When user enter or click out of the div (focusout) => save content
   e.target.addEventListener('focusout', function func(e2) {
+    //If content is a quantity value, validate it
     if (isQuantity) {
-      console.log(e2.target.textContent)
       if (regex.test(e2.target.textContent)) {
         //Get the object in the list correspond to the current target
         //and assign new value
         list[index].quantity = e2.target.textContent
       } else {
+        //Else reassign the original value to the DOM and alert the user
         alert('Please enter valid quantity (no negative number and text)')
         e2.target.textContent = list[index].quantity
       }
@@ -278,20 +286,19 @@ const editFunc = (e, isQuantity) => {
     //Save list
     localStorage.setItem('list', JSON.stringify(list))
 
+    //Remove this event to avoid duplicate events
     e.target.removeEventListener('focusout', func, false)
   })
 }
 
-document.querySelector('div[contenteditable]').keydown(function(e) {
-  console.log('a')
-
+//Remove original enter key event of contenteditable
+// and change it to focusout
+const enterFocusOut = e => {
   const key = e.keyCode || e.charCode // ie||others
   if (key == 13) {
     // if enter key is pressed
     e.preventDefault()
     e.currentTarget.blur()
-    console.log('here')
-
     return false
   }
-})
+}
